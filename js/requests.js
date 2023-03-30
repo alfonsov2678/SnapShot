@@ -1,111 +1,110 @@
+document.getElementById("displaytext").style.display = "none";
 
-  document.getElementById("displaytext").style.display = "none";
-  
-  function searchPhoto()
-  {
-  
+function searchPhoto() {
+  var apigClient = apigClientFactory.newClient({
+    apiKey: "AdEUPD6WIx9RHuqRD7upJ6gQcJQTUpfq1TQl7BL3",
+  });
 
-    var apigClient = apigClientFactory.newClient({
-                       apiKey: "AdEUPD6WIx9RHuqRD7upJ6gQcJQTUpfq1TQl7BL3"
-          });
-  
-      var user_message = document.getElementById('note-textarea').value;
-  
-      var body = { q : user_message };
-      var params = {q : user_message}
-      console.log(params)
-      var additionalParams = {headers: {
-        'Content-Type':"application/json"}};
-  
-      
-      apigClient.searchGet(params, body , additionalParams).then(function(result){
+  var user_message = document.getElementById("note-textarea").value;
 
-        /*
-          var data = {}
-          var data_array = []
-          resp_data  = res.data
-          length_of_response = resp_data.length;
-          if(length_of_response == 0)
-         {
-            document.getElementById("displaytext").innerHTML = "No Images Found !!!"
-            document.getElementById("displaytext").style.display = "block";
-          }
-  
-          console.log(result.data)*/
-          /*
-          resp_data.forEach( function(obj) {
-            
-              var img = new Image();
-              img.src = img.src = "https://photos-concierge-s3b2ooo2-gn4y6jcf4bfh.s3.amazonaws.com/"+obj;;
-              img.setAttribute("class", "banner-img");
-              img.setAttribute("alt", "effy");
-              document.getElementById("displaytext").innerHTML = "Images returned are : "
-              document.getElementById("img-container").appendChild(img);
-              document.getElementById("displaytext").style.display = "block";
+  var body = { q: user_message };
+  var params = { q: user_message };
+  console.log(params);
+  var additionalParams = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
 
-            });
+  apigClient.searchGet(params, body, additionalParams).then(function (result) {
+      const gallery = document.getElementById("gallery");
+      console.log("Response:", result.data);
+      gallery.innerHTML = "";
 
-            */
-
-            console.log('API Response:', result.data); 
-            const gallery = document.getElementById('gallery');
-            console.log('API Response:', result.data); 
-            gallery.innerHTML = '';
-
-            result.data.results.forEach(url => {
-                const img = document.createElement('img');
-                img.src = url;
-                gallery.appendChild(img);
-            });
-        }).catch( function(result){
-            console.log("error")
-        });
-  
-        /*
-        const query = document.getElementById('note-textarea').value;
-        const params = { q: query };
-
-        console.log('Search request:', `/search?q=${query}`);
-
-        apigClient.searchGet(params)
-            .then(function(result) {
-                console.log('API Response:', result.data); 
-                const gallery = document.getElementById('gallery');
-                console.log('API Response:', result.data); 
-                gallery.innerHTML = '';
-                result.data.forEach(url => {
-                    const img = document.createElement('img');
-                    img.src = url;
-                    gallery.appendChild(img);
-                });
-            })
-            .catch(function(result) {
-                console.error('Error:', result);
-            });
-
-        */
-      
-  }
-
-  function getBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        let encoded = reader.result.replace(/^data:(.*;base64,)?/, '');
-        if ((encoded.length % 4) > 0) {
-          encoded += '='.repeat(4 - (encoded.length % 4));
-        }
-        resolve(encoded);
-      };
-      reader.onerror = error => reject(error);
+      result.data.results.forEach((url) => {
+        const img = document.createElement("img");
+        img.src = url;
+        gallery.appendChild(img);
+      });
+    })
+    .catch(function (result) {
+      console.log("error");
     });
-  }
+}
 
+function getBase64Two(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      let encoded = reader.result.replace(/^data:(.*;base64,)?/, '');
+      if ((encoded.length % 4) > 0) {
+        encoded += '='.repeat(4 - (encoded.length % 4));
+      }
+      resolve(encoded);
+    };
+    reader.onerror = error => reject(error);
+  });
+}
+
+
+
+function getBase64(file) {
+  var reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = function () {
+    return reader.result
+  };
+  reader.onerror = function (error) {
+    console.log('Error: ', error);
+  };
+}
+
+async function uploadPhoto() {
+  var apigClient = apigClientFactory.newClient({
+    apiKey: "AdEUPD6WIx9RHuqRD7upJ6gQcJQTUpfq1TQl7BL3",
+  });
+
+
+  const params = {
+    "x-amz-meta-customLabels": [""],
+    "filename": "fox.jpg",
+  };
+
+  var file = document.getElementById("file_path");
+
+
+  var file = getBase64Two(file.files[0]).then((result => {
+    console.log("RESULT")
+    console.log(result);
+
+    const formData = new FormData();
+    formData.append("file", result);
   
-  function uploadPhoto()
-  {
-    var file = document.getElementById('file_path').files[0];
+    console.log("Example Upload: ", {
+      method: "PUT",
+      body: result,
+      headers: params
+    });
+  
+    var additionalParams = {};
+  
+
+    apigClient.uploadFilenamePut(params, result, additionalParams).then(function (response) {
+      console.log("RUNNING")
+      if (response.status === 200) {
+        alert("Photo uploaded successfully!");
+      } else {
+        alert("Failed to upload the photo");
+      }
+    })
+    .catch(function (error) {
+      console.error("Error:", error);
+    });
+  }));
+
+  /*
+  
     const reader = new FileReader();
  
     var file_data;
@@ -128,34 +127,9 @@
           document.getElementById("uploadText").style.display = "block";
         }
       })
-    });
- 
- }
- 
-  /*{
-    var file_data = $("#file_path").prop("files")[0];   // Getting the properties of file from file field
-    var form_data = new FormData();                  // Creating object of FormData class
-    form_data.append("file", file_data)
-  
-     var apigClient = apigClientFactory.newClient({
-                       apiKey: "AdEUPD6WIx9RHuqRD7upJ6gQcJQTUpfq1TQl7BL3"
-          });
-  
-     var data = document.getElementById('file_path').value;
-     var x = data.split("\\")
-     var filename = x[x.length-1]
-     console.log(filename)
-  
-     var body = {};
-     var params = {"key" : filename , "bucket" : "photos-concierge-s3b2ooo2-gn4y6jcf4bfh" , "Content-Type" : "image/jpg"};
-     var additionalParams = {};
     
-     apigClient.uploadFilenamePut(params, form_data, additionalParams).then(function(res){
-       console.log(res)
-     }).catch( function(result){
-  
-     });
-  return false;
-  
-  }
-  */
+    });
+*/
+
+
+}
