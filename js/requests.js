@@ -76,7 +76,7 @@
       var file_type = file.type + ";base64"
      
       var body = data;
-      var params = {"key" : file.name, "Content-Type" : file.type};
+      var params = {"key" : file.name, "Content-Type" : "image/jpg"};
       var additionalParams = {};
       apigClient.uploadFilenamePut(params, body , additionalParams).then(function(res){
         if (res.status == 200)
