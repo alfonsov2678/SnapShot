@@ -13,9 +13,11 @@ $(function () {
 var apigClient = apigClientFactory.newClient();
 
 function send_request(query) {
+    console.log("running")
+    query = "Maradona"
     $.ajax({
         method: 'GET',
-        url: 'https://er6b5c9yd9.execute-api.us-east-1.amazonaws.com/prod/search' + query,
+        url: 'https://7zwchfpu65.execute-api.us-east-1.amazonaws.com/prod/search?q=' + query,
         success: function (res) {
             console.log(res);
             if(res.indexOf("There were no photos matching the categories you were looking for.") >= 0){
