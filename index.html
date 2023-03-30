@@ -64,9 +64,11 @@
             <h3 style="text-align:center">Upload a new photo</h3>
             <div class="input-group" style="margin-top:30px;">
                 <input type="file" class="form-control upload" name="search" id="file_path">
-                <div class="input-group-btn">
-                    <button class="btn btn-default" type="submit" onclick="uploadPhoto()">Upload</button>
-                </div>
+            </div>
+            <div>Attach Custom Labels</div>
+            <input id="custom-labels" type="text" class="form-control" placeholder="Add labels" name="labels" style="margin-top: 10px;">
+            <div class="input-group-btn" style="margin-top: 10px;">
+                <button class="btn btn-default" type="submit" style="background-color: black; color: white; height: 50px; width: 100px;" onclick="uploadPhoto()">Upload</button>
             </div>
         </div>
         <div></div>

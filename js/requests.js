@@ -66,9 +66,12 @@ async function uploadPhoto() {
   });
 
   var file = document.getElementById("file_path");
-  
+  var labels = document.getElementById("custom-labels").value
+
+  const labelsArray = labels.split(",")
+
   const params = {
-    "x-amz-meta-customLabels": [""],
+    "x-amz-meta-customLabels": labelsArray,
     "filename": file.files[0].name,
   };
 
