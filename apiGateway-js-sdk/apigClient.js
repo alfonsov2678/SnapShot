@@ -53,7 +53,7 @@ apigClientFactory.newClient = function (config) {
 
     
     // extract endpoint and path from url
-    var invokeUrl = 'https://er6b5c9yd9.execute-api.us-east-1.amazonaws.com/prod';
+    var invokeUrl = 'https://7zwchfpu65.execute-api.us-east-1.amazonaws.com/prod';
     var endpoint = /(^https?:\/\/[^\/]+)/g.exec(invokeUrl)[1];
     var pathComponent = invokeUrl.substring(endpoint.length);
 
@@ -119,42 +119,6 @@ apigClientFactory.newClient = function (config) {
     };
     
     
-    apigClient.uploadPut = function (params, body, additionalParams) {
-        if(additionalParams === undefined) { additionalParams = {}; }
-        
-        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
-        
-        var uploadPutRequest = {
-            verb: 'put'.toUpperCase(),
-            path: pathComponent + uritemplate('/upload').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
-            headers: apiGateway.core.utils.parseParametersToObject(params, []),
-            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
-            body: body
-        };
-        
-        
-        return apiGatewayClient.makeRequest(uploadPutRequest, authType, additionalParams, config.apiKey);
-    };
-    
-    
-    apigClient.uploadOptions = function (params, body, additionalParams) {
-        if(additionalParams === undefined) { additionalParams = {}; }
-        
-        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
-        
-        var uploadOptionsRequest = {
-            verb: 'options'.toUpperCase(),
-            path: pathComponent + uritemplate('/upload').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
-            headers: apiGateway.core.utils.parseParametersToObject(params, []),
-            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
-            body: body
-        };
-        
-        
-        return apiGatewayClient.makeRequest(uploadOptionsRequest, authType, additionalParams, config.apiKey);
-    };
-    
-    
     apigClient.uploadFilenamePut = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
@@ -170,6 +134,24 @@ apigClientFactory.newClient = function (config) {
         
         
         return apiGatewayClient.makeRequest(uploadFilenamePutRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.uploadFilenameOptions = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
+        
+        var uploadFilenameOptionsRequest = {
+            verb: 'options'.toUpperCase(),
+            path: pathComponent + uritemplate('/upload/{filename}').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(uploadFilenameOptionsRequest, authType, additionalParams, config.apiKey);
     };
     
 
