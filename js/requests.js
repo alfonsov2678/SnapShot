@@ -29,7 +29,7 @@
   
           resp_data.forEach( function(obj) {
               var img = new Image();
-              img.src = img.src = "https://s3.amazonaws.com/photos-concierge-s3b2ooo2-gn4y6jcf4bfh/"+obj;;
+              img.src = img.src = "https://photos-concierge-s3b2ooo2-gn4y6jcf4bfh.s3.amazonaws.com/"+obj;;
               img.setAttribute("class", "banner-img");
               img.setAttribute("alt", "effy");
               document.getElementById("displaytext").innerHTML = "Images returned are : "
