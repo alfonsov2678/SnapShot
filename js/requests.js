@@ -65,14 +65,15 @@ async function uploadPhoto() {
     apiKey: "AdEUPD6WIx9RHuqRD7upJ6gQcJQTUpfq1TQl7BL3",
   });
 
-
+  var file = document.getElementById("file_path");
+  
   const params = {
     "x-amz-meta-customLabels": [""],
-    "filename": "fox.jpg",
+    "filename": file.files[0].name,
   };
 
-  var file = document.getElementById("file_path");
-
+  console.log("FILES NAMES")
+  console.log(file.files[0].name)
 
   var file = getBase64Two(file.files[0]).then((result => {
     console.log("RESULT")
